@@ -24,9 +24,9 @@ function createCard(item, deleteCard) {
   // const likeBtn = cardElementCopy.querySelector('.card__like-button');
 }
 // Функция добавления карточки
-function addCard(card) {
-  const cardToAdd = createCard(card, deleteCard); // вызываем функцию для отрисовки карточки
-  container.append(cardToAdd); // добавляем готовую карточку в контейнер
+function addCard(event) {
+  const cardToAdd = createCard(event, deleteCard); // вызываем функцию для отрисовки карточки
+  container.prepend(cardToAdd); // добавляем готовую карточку в контейнер
 }
 
 // @todo: Функция удаления карточки
@@ -37,4 +37,4 @@ function deleteCard(card) {
 }
 
 // @todo: Вывести карточки на страницу
-container.append(initialCards.forEach(addCard));
+initialCards.forEach(addCard);
