@@ -1,14 +1,11 @@
-// @todo: Темплейт карточки
 
-const container = document.querySelector('.places__list'); // контейнер карточек
 
-// @todo: DOM узлы
-
-// @todo: Функция создания карточки
-function createCard(item, deleteCard) {
+// функция создания карточки
+function createCard(item, deleteCard, popupImage, likeCard) {
+  console.log(item);
   const template = document.querySelector('#card-template').content;
-  const cardElement = template.querySelector('.card');
   const cardElementCopy = template.cloneNode(true);
+  const likeButton = cardElementCopy.querySelector('.card__like-button');
 
   const cardTitle = cardElementCopy.querySelector('.card__title');
   const cardImage = cardElementCopy.querySelector('.card__image');
@@ -16,25 +13,25 @@ function createCard(item, deleteCard) {
   cardTitle.textContent = item.name; // добавляем заголовок
   cardImage.alt = item.name; // добавляем данные
   
-
   const deleteBtn = cardElementCopy.querySelector('.card__delete-button');
   deleteBtn.addEventListener('click', deleteCard); 
 
+  cardImage.addEventListener('click', popupImage);
+  likeButton.addEventListener('click', likeCard);
+
+
   return cardElementCopy; //возвращаем карточку
-  // const likeBtn = cardElementCopy.querySelector('.card__like-button');
-}
-// Функция добавления карточки
-function addCard(event) {
-  const cardToAdd = createCard(event, deleteCard); // вызываем функцию для отрисовки карточки
-  container.prepend(cardToAdd); // добавляем готовую карточку в контейнер
 }
 
-// @todo: Функция удаления карточки
-
+// Функция удаления карточки
 function deleteCard(card) {
   const cardToRemove = card.target.closest('.card'); // target для элемента на котором произошло событие, closest - ищет родителя
   cardToRemove.remove(); // удаляем карточку
 }
 
-// @todo: Вывести карточки на страницу
-initialCards.forEach(addCard);
+// функция лайка карточки
+function likeCard(evt) {
+  evt.target.classList.toggle('card__like-button_is-active');
+}
+
+export { likeCard, deleteCard, createCard };
