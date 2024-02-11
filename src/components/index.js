@@ -15,8 +15,6 @@ const allPopups = document.querySelectorAll('.popup'); // все попапы
 
 const popupImageCard = document.querySelector('.popup_type_image'); 
 
-
-
 // кнопка добавления карточки
 profileAddButton.addEventListener('click', function() {
   openPopup(popupNewPlace);
@@ -29,6 +27,7 @@ popupCloseButtons.forEach((button) => {
 
 // закрытие по оверлею
 allPopups.forEach((popup) => {
+  popup.classList.add('popup_is-animated');
   popup.addEventListener('click', closeByClick);
 })
  
