@@ -4,7 +4,6 @@ function openPopup(popup) {
   popup.classList.add('popup_is-opened');
   popup.classList.add('popup_is-animated');
   document.addEventListener('keydown', closeEsc); // добавляем слушателя (закрытие через esc)
-  return popup;
 }
 
 // функция закрытия модального окна
@@ -30,4 +29,9 @@ function closeByClick(evt) {
   }
 }
 
-export { openPopup, closePopup, closeByClick };
+function closePopupButton(evt) {
+  const popup = evt.target.closest(".popup");
+  closePopup(popup);
+}
+
+export { openPopup, closePopup, closeByClick, closePopupButton };

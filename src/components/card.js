@@ -3,7 +3,7 @@
 // функция создания карточки
 function createCard(item, deleteCard, popupImage, likeCard) {
   console.log(item);
-  const template = document.querySelector('#card-template').content;
+  const template = document.querySelector('#card-template').content.querySelector('.card');
   const cardElementCopy = template.cloneNode(true);
   const likeButton = cardElementCopy.querySelector('.card__like-button');
 
