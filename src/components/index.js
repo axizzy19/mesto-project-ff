@@ -73,7 +73,7 @@ function handlePlaceFormSubmit(evt) {
     name: placeNameInput.value,
     link: linkInput.value
   }
-  container.prepend(createCard(card, deleteCard, openImage, likeCard));
+  container.prepend(createCard(card, {deleteCard, openImage, likeCard}));
   closePopup(popupPlace);
 }
 
