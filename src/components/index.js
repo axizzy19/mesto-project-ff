@@ -2,6 +2,7 @@ import '/src/pages/index.css';
 import { initialCards } from './cards.js';
 import { likeCard, deleteCard, createCard } from './card.js'
 import { openPopup, closePopup, closeByClick, closePopupButton } from './modal.js'
+import { hideInputError, toggleButtonState, setEventListeners, enableValidation, clearValidation } from './validation.js'
 
 const container = document.querySelector('.places__list'); // контейнер карточек
 
@@ -12,11 +13,11 @@ const popupPlace = document.querySelector('.popup_type_new-card'); // попап
 const popupNewPlace = document.querySelector('.popup_type_new-card'); // попап добавления карточки
 const popupCloseButtons = document.querySelectorAll('.popup__close'); // все кнопки закрытия в document
 const allPopups = document.querySelectorAll('.popup'); // все попапы
-
 const popupImageCard = document.querySelector('.popup_type_image'); 
 
 // кнопка добавления карточки
 profileAddButton.addEventListener('click', function() {
+  clearValidation(formElementPicture, classes); // отчистили валидацию формы новое место
   openPopup(popupNewPlace);
 })
 
@@ -59,6 +60,7 @@ formEditProfile.addEventListener('submit', function (evt) {
 profileEditButton.addEventListener('click', function() {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
+  clearValidation(formEditProfile, classes); // отчистили валидацию формы редактирования профиля
   openPopup(popupEdit);
 })
 
@@ -104,6 +106,18 @@ function addCard(card) {
   const cardToAdd = createCard(card, cardHandlers); // вызываем функцию для отрисовки карточки
   container.prepend(cardToAdd); // добавляем готовую карточку в контейнер
 }
+
+// объекты валидации
+const classes = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
+
+enableValidation(classes);
 
 // Вывести карточки на страницу
 initialCards.forEach(addCard);
