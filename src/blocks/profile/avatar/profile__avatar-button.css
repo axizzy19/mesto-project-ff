@@ -1,0 +1,28 @@
+.profile__avatar-button {
+  cursor: pointer;
+  background-color: transparent;
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  inline-size: 26px;
+  block-size: 26px;
+  inset-inline-start: 47px;
+  inset-block-start: 47px;
+  background-image: url('/src/images/avatar.svg');
+  border: none;
+  display: none;
+}
+
+.profile__avatar-background {
+  inline-size: 100%;
+  block-size: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  z-index: 1;
+  display: none;
+}
+
+.profile__image:hover .profile__avatar-button,
+.profile__image:hover .profile__avatar-background{
+  display: block;
+}

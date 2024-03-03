@@ -12,3 +12,9 @@
   color: black;
   border: 1px solid black;
 }
+
+.popup__button_disabled.popup__button {
+  background-color: white;
+  color: #C4C4C4;
+  border-color: #C4C4C4;
+}
