@@ -1,4 +1,4 @@
-import { sendLike, deleteLike, removeCard } from './index.js';
+import { sendLike, deleteLike, removeCard, editProfile, addNewCard, updateAvatar } from './api.js';
 
 // функция создания карточки
 function createCard(item, userId, {deleteCard, openImage, likeCard}) {
