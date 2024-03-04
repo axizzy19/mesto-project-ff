@@ -15,7 +15,10 @@ function createCard(item, userId, {deleteCard, openImage, likeCard}) {
     deleteBtn.remove();
   }
   else {
-    deleteBtn.addEventListener('click', deleteCard);
+    // deleteBtn.addEventListener('click', deleteCard);
+    deleteBtn.addEventListener('click', function (evt) {
+      deleteCard(evt, item);
+    });
   }
 
   const cardTitle = cardElementCopy.querySelector('.card__title');
@@ -43,17 +46,21 @@ function createCard(item, userId, {deleteCard, openImage, likeCard}) {
 }
 
 // Функция удаления карточки
-function deleteCard(card) {
-  const cardToRemove = card.target.closest('.card'); // target для элемента на котором произошло событие, closest - ищет родителя
-  removeCard(card, card._id);
-  cardToRemove.remove(); // удаляем карточку
+function deleteCard(evt, card) {
+  const cardToRemove = evt.target.closest('.card');
+  removeCard(card._id)
+    .then(() => {
+      cardToRemove.remove();
+    })
+    .catch((err) => {
+      console.log(`Ошибка, не выполенено: ${err.status}`);
+    })
 }
 
 // функция лайка карточки
 function likeCard(evt, id) {
   const likeButton = evt.target;
-  const likesAmount = likeButton.nextElementSibling;
-
+  const likesAmount = likeButton.closest('.card__button_container').querySelector('.card__likes');
   if (!likeButton.classList.contains('card__like-button_is-active')) {
     sendLike(id)
       .then((card) => {

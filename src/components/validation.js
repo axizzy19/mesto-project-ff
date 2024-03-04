@@ -16,16 +16,17 @@ const hideInputError = (formElement, input, classes) => {
 
 // функция проверки валидации
 const checkInputValidity = (formElement, inputElement, classes) => { // formElement - форма
+  
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    inputElement.setCustomValidity("");
+  }
   if ((!inputElement.validity.valid)) {
     showInputError(formElement, inputElement, inputElement.validationMessage, classes);
   }
   else {
     hideInputError(formElement, inputElement, classes);
-  }
-  if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-  } else {
-    inputElement.setCustomValidity("");
   }
 }
 
@@ -64,6 +65,9 @@ const toggleButtonState = (inputList, buttonElement, classes) => {
 function enableValidation(classes) {
   const forms = Array.from(document.querySelectorAll(classes.formSelector));
   forms.forEach((form) => {
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+    })
     setEventListeners(form, classes);
   })
 }

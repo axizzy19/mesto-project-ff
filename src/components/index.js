@@ -3,8 +3,7 @@ import { initialCards } from './cards.js';
 import { likeCard, deleteCard, createCard } from './card.js'
 import { openPopup, closePopup, closeByClick, closePopupButton } from './modal.js'
 import { hideInputError, toggleButtonState, setEventListeners, enableValidation, clearValidation } from './validation.js'
-import { sendLike, deleteLike, removeCard, editProfile, addNewCard, updateAvatar } from './api.js'
-
+import { sendLike, deleteLike, removeCard, editProfile, addNewCard, updateAvatar, loadAll } from './api.js'
 
 // объекты валидации
 const classes = {
@@ -66,8 +65,16 @@ function handleEditProfile(evt) {
     name: nameInput.value,
     about: jobInput.value
   }
-  editProfile(profile); // отправляем данные на сервер
-  closePopup(popupEdit);
+  editProfile(profile) // отправляем данные на сервер
+    .then(() => {
+      closePopup(popupEdit);
+    })  
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      editSubmitButton.textContent = "Сохранить";
+    })
 }
 
 formEditProfile.addEventListener('submit', function (evt) {
@@ -75,6 +82,25 @@ formEditProfile.addEventListener('submit', function (evt) {
   nameInput.value = '';
   jobInput.value = '';
 });
+
+// подгружаем все
+const setProfileData = (data) => {
+  profileTitle.textContent = data.name;
+  profileDescription.textContent = data.about;
+  profileImage.style = `background-image: url('${data.avatar}')`;
+}
+
+loadAll()
+  .then(([cards, user]) => {
+    cards.forEach((card) => {
+      // console.log(card.likes.length);
+      addCard(card, user._id); // отрисовали картинки
+    })
+    setProfileData(user);
+  })
+  .catch((err) => {
+    console.log(`Ошибка: ${err}`);
+  })
 
 // кнопка редактирования профиля
 profileEditButton.addEventListener('click', function () {
@@ -100,11 +126,14 @@ function handlePlaceFormSubmit(evt) {
   addNewCard(card) // отправляем данные на сервер
     .then((data) => {
       addCard(data, data.owner._id);
+      closePopup(popupPlace);
     })
     .catch((err) => {
       console.log(`Ошибка: ${err.status}`);
     })
-  closePopup(popupPlace);
+    .finally(() => {
+      newCardSubmitButton.textContent = "Сохранить";
+    })
 }
 
 formElementPicture.addEventListener('submit', function (evt) {
@@ -123,9 +152,17 @@ function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   const newUrl = urlInput.value;
   avatarImage.style = `background-image: url(${newUrl})`;
-  updateAvatar(newUrl);
   newAvatarSubmitButton.textContent = "Сохранение...";
-  closePopup(popupProfileAvatar);
+  updateAvatar(newUrl)
+    .then(() => {
+      closePopup(popupProfileAvatar);
+    })
+    .catch((err) => {
+      console.log(err.status);
+    })
+    .finally(() => {
+      newAvatarSubmitButton.textContent = "Сохранить";
+    })
 }
 
 avatarImage.addEventListener('click', function () {
