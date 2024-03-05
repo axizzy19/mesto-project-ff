@@ -58,16 +58,18 @@ function handleEditProfile(evt) {
   // получаем значения полей
   const nameInputValue = nameInput.value;
   const jobInputValue = jobInput.value;
-  // вставляем новые значения 
-  profileTitle.textContent = nameInputValue;
-  profileDescription.textContent = jobInputValue;
   const profile = {
     name: nameInput.value,
     about: jobInput.value
   }
   editProfile(profile) // отправляем данные на сервер
     .then(() => {
+      // вставляем новые значения 
+      profileTitle.textContent = nameInputValue;
+      profileDescription.textContent = jobInputValue;
       closePopup(popupEdit);
+      nameInput.value = '';
+      jobInput.value = '';
     })  
     .catch((err) => {
       console.log(err);
@@ -79,8 +81,6 @@ function handleEditProfile(evt) {
 
 formEditProfile.addEventListener('submit', function (evt) {
   handleEditProfile(evt);
-  nameInput.value = '';
-  jobInput.value = '';
 });
 
 // подгружаем все
@@ -93,7 +93,6 @@ const setProfileData = (data) => {
 loadAll()
   .then(([cards, user]) => {
     cards.forEach((card) => {
-      // console.log(card.likes.length);
       addCard(card, user._id); // отрисовали картинки
     })
     setProfileData(user);
@@ -127,6 +126,8 @@ function handlePlaceFormSubmit(evt) {
     .then((data) => {
       addCard(data, data.owner._id);
       closePopup(popupPlace);
+      placeNameInput.value = '';
+      linkInput.value = '';
     })
     .catch((err) => {
       console.log(`Ошибка: ${err.status}`);
@@ -138,8 +139,6 @@ function handlePlaceFormSubmit(evt) {
 
 formElementPicture.addEventListener('submit', function (evt) {
   handlePlaceFormSubmit(evt);
-  placeNameInput.value = '';
-  linkInput.value = '';
 });
 
 // форм обновления аватара
@@ -151,11 +150,12 @@ const newAvatarSubmitButton = popupProfileAvatar.querySelector(`${classes.submit
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   const newUrl = urlInput.value;
-  avatarImage.style = `background-image: url(${newUrl})`;
   newAvatarSubmitButton.textContent = "Сохранение...";
   updateAvatar(newUrl)
     .then(() => {
+      avatarImage.style = `background-image: url(${newUrl})`;
       closePopup(popupProfileAvatar);
+      urlInput.value = '';
     })
     .catch((err) => {
       console.log(err.status);
@@ -166,14 +166,12 @@ function handleAvatarFormSubmit(evt) {
 }
 
 avatarImage.addEventListener('click', function () {
-  urlInput.value = '';
   clearValidation(popupProfileAvatar, classes);
   openPopup(popupProfileAvatar);
 })
 
 popupProfileAvatar.addEventListener('submit', function (evt) {
   handleAvatarFormSubmit(evt);
-  urlInput.value = '';
 })
 
 // функция открытия карточки (попап)
